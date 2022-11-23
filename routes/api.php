@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Empresa\EmpresaController;
 use App\Http\Controllers\TipoServico\TipoServicoController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,11 +30,8 @@ use Illuminate\Support\Facades\Route;
 Route::resource ('/tipo-servico', TipoServicoController::class);
 
 Route::post     ('/empresa/vincular-tipo-servico/{id}', [EmpresaController::class, 'vincularTiposServicos']);
-Route::resource ('/empresa',                        EmpresaController::class);
+Route::resource ('/empresa',                             EmpresaController::class);
 
-
-Route::get('/testes', function () {
-    return [
-        'funcionando' => true
-    ];
-});
+Route::post     ('/user/login', [UserController::class, 'login']);
+Route::get      ('/user/teste', [UserController::class, 'teste']);
+Route::resource ('/user', UserController::class);

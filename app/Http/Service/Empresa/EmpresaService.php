@@ -23,7 +23,10 @@ class EmpresaService
     public function register(Request $request){
         $attributes = $request->all();
 
-        $attributes['ano_fundacao'] = DateTime::createFromFormat('d/m/Y', $attributes['ano_fundacao'])->format("Y-m-d");
+        $ano_fundacao = implode('-', array_reverse(explode('/', substr($attributes['ano_fundacao'], 0, 10)))).substr($attributes['ano_fundacao'], 10);
+        $data_formatada = new DateTime($ano_fundacao);
+
+        $attributes['ano_fundacao'] = $data_formatada->format('Y-m-d');
 
         $this->empresaModel->create($attributes);
 
