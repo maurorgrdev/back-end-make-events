@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Models\Foto;
+namespace App\Models\Logo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FotoModel extends Model
+class LogoModel extends Model
 {
     use HasFactory;
-    protected $table = 'foto';
+    protected $table = 'logo';
 
     protected $fillable = [
         'nome',
@@ -16,7 +16,7 @@ class FotoModel extends Model
         'mime',
         'path',
         'size',
-        'status_foto',
+        'status_logo',
         'empresa_id',
     ];
 

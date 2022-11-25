@@ -13,6 +13,8 @@ class EmpresaModel extends Model
         'nome',
         'nome_fantasia',
         'cnpj',
+        'website',
+        'cep',
         'endereco_comercial',
         'email',
         'telefone',
@@ -21,6 +23,7 @@ class EmpresaModel extends Model
         'ano_fundacao',
         'empregados',
         'descricao',
+        'usuario_responsavel',
         'status_empresa',
     ];
 

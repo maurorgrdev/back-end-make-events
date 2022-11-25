@@ -15,15 +15,18 @@ class CreateEmpresaTable extends Migration
     {
         Schema::create('empresa', function (Blueprint $table) {
             $table->id();
+            $table->string('usuario_responsavel');
             $table->string('nome')->unique();
             $table->string('nome_fantasia')->unique();
+            $table->string('website')->unique()->nullable();
             $table->string('cnpj')->unique();
+            $table->string('cep')->unique();
             $table->string('endereco_comercial');
-            $table->string('email');
-            $table->string('telefone');
-            $table->string('cidade');
-            $table->string('estado');
-            $table->dateTime('ano_fundacao')->nullable();
+            $table->string('email')->unique();
+            $table->string('telefone')->nullable();
+            $table->string('cidade')->nullable();
+            $table->string('estado')->nullable();
+            $table->string('ano_fundacao')->nullable();
             $table->integer('empregados')->nullable();
             $table->text('descricao')->nullable();
             $table->string('status_empresa')->default(true);

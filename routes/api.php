@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Empresa\EmpresaController;
+use App\Http\Controllers\Foto\FotoController;
 use App\Http\Controllers\TipoServico\TipoServicoController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
@@ -29,9 +30,17 @@ use Illuminate\Support\Facades\Route;
 // ------------------------
 Route::resource ('/tipo-servico', TipoServicoController::class);
 
-Route::post     ('/empresa/vincular-tipo-servico/{id}', [EmpresaController::class, 'vincularTiposServicos']);
 Route::resource ('/empresa',                             EmpresaController::class);
+Route::post     ('/empresa/vincular-tipo-servico/{id}', [EmpresaController::class, 'vincularTiposServicos']);
+Route::post     ('/empresa/upload-foto/{id}', [EmpresaController::class, 'uploadFoto']);
+Route::delete   ('/empresa/delete-fotos/{id}', [EmpresaController::class, 'deletarFotosEmpresas']);
+Route::get      ('/empresa/carregar-fotos-empresas/{id}', [EmpresaController::class, 'carregarFotosEmpresas']);
 
 Route::post     ('/user/login', [UserController::class, 'login']);
 Route::get      ('/user/teste', [UserController::class, 'teste']);
 Route::resource ('/user', UserController::class);
+
+Route::resource ('/foto', FotoController::class);
+Route::post     ('/foto/upload-logo-empresa/{id}', [FotoController::class, 'uploadLogoEmpresa']);
+Route::get      ('/foto/show-logo-empresa/{id}', [FotoController::class, 'logoFindById']);
+Route::get      ('/foto/delete-arquivo-empresa/{id}', [FotoController::class, 'deleteArquivoEmpresa']);

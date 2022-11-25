@@ -10,15 +10,16 @@ use Illuminate\Notifications\Notification;
 class EmailNovoUsuarioNotify extends Notification
 {
     use Queueable;
+    protected $dados;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($dados)
     {
-        //
+        $this->dados = $dados;
     }
 
     /**
@@ -34,16 +35,28 @@ class EmailNovoUsuarioNotify extends Notification
 
     /**
      * Get the mail representation of the notification.
+     * 
+     * Novo ADM da empresa
      *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
+        $url = config('constants.SISTEMA_URL');
+
+        $email  = $this->dados['email'];
+        $senha = $this->dados['senha'];
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->subject('Notificação de Novo Usuário')
+            ->greeting('Olá!')
+            ->line('Seja bem-vindo(a) ao Make Events !')
+            ->line('A partir de agora você terá acesso a edição do seu perfil em Make Events') 
+            ->line('Sua senha foi gerada automaticamente pelo sistema:')
+            ->line('E-mail: '. $email)
+            ->line('Senha: '. $senha)
+            ->action('Entrar', $url);
     }
 
     /**

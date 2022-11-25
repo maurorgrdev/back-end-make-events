@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Empresa;
 
 use App\Http\Controllers\Controller;
 use App\Http\Service\Empresa\EmpresaService;
+use Exception;
 use Illuminate\Http\Request;
 
 class EmpresaController extends Controller
@@ -33,7 +34,13 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-        $this->empresaService->register($request);
+        try {
+            return response()->json($this->empresaService->register($request), 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e
+            ],404);
+        }
     }
 
     /**
@@ -62,6 +69,17 @@ class EmpresaController extends Controller
 
     public function vincularTiposServicos(Request $request, $id){
         $this->empresaService->vincularTiposServicos($request, $id);
+    }
 
+    public function uploadFoto(Request $request, $id){
+        $this->empresaService->uploadFoto($request, $id);
+    }
+
+    public function carregarFotosEmpresas($id){
+        return $this->empresaService->carregarFotosEmpresas($id);
+    }
+
+    public function deletarFotosEmpresas($id){
+        return $this->empresaService->deletarFotosEmpresas($id);
     }
 }

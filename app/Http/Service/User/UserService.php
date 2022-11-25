@@ -27,11 +27,11 @@ class UserService
 
         $object = [
             'email' => $this->userModel->email,
-            'codigo' => $this->userModel->password,
+            'senha' => $senha,
         ];
 
         $receiveEmail = User::find($this->userModel->id);
-        $receiveEmail->notify(new EmailNovoUsuarioNotify());
+        $receiveEmail->notify(new EmailNovoUsuarioNotify($object));
 
     }
 
