@@ -6,6 +6,7 @@ use App\Models\Empresa\EmpresaModel;
 use App\Models\Empresa\EmpresaServicoModel;
 use App\Models\Foto\FotoModel;
 use App\Models\Logo\LogoModel;
+use App\Models\TipoServico\TipoServicoModel;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
@@ -38,17 +39,18 @@ class EmpresaService
         $empresasGroup = $this->empresaModel->all();
 
         foreach ($empresasGroup as $empresaKey) {
-            $arquivo = LogoModel::where('empresa_id', $empresaKey->id)->first();
+            if($arquivo = LogoModel::where('empresa_id', $empresaKey->id)->first())
+            {
+                $path = $arquivo->path.'/'.$arquivo->filename;
+                $name = $arquivo->filename;
 
-            $path = $arquivo->path.'/'.$arquivo->filename;
-            $name = $arquivo->filename;
-
-            $empresaKey->logo = [
-                'logo_id'=> $arquivo->id,
-                'nome'   => $name,
-                'tipo'   => Storage::mimeType($path),
-                'base64' => base64_encode(Storage::get($path, $name))
-            ];
+                $empresaKey->logo = [
+                    'logo_id'=> $arquivo->id,
+                    'nome'   => $name,
+                    'tipo'   => Storage::mimeType($path),
+                    'base64' => base64_encode(Storage::get($path, $name))
+                ];
+            }
         }
 
         return $empresasGroup;
@@ -57,16 +59,31 @@ class EmpresaService
     public function findById($id){
         $empresaDTO = $this->empresaModel->find($id);
 
-        $logo = LogoModel::where('empresa_id', $id)->first();
-        $path = $logo->path.'/'.$logo->filename;
-        $name = $logo->filename;
+        if($logo = LogoModel::where('empresa_id', $id)->first()){
+            $logo = LogoModel::where('empresa_id', $id)->first();
+            $path = $logo->path.'/'.$logo->filename;
+            $name = $logo->filename;
 
-        $empresaDTO->logo = [
-            'logo_id'=> $logo->id,
-            'nome'   => $name,
-            'tipo'   => Storage::mimeType($path),
-            'base64' => base64_encode(Storage::get($path, $name))
-        ];
+            $empresaDTO->logo = [
+                'logo_id'=> $logo->id,
+                'nome'   => $name,
+                'tipo'   => Storage::mimeType($path),
+                'base64' => base64_encode(Storage::get($path, $name))
+            ];
+        }
+
+        $servicos = [];
+        
+        if($empresaServicos = EmpresaServicoModel::where('empresa_id', $empresaDTO->id)->get()){
+            foreach ($empresaServicos as $empresaServicoKey) {
+                $servicosDTO = TipoServicoModel::find($empresaServicoKey->servico_id);
+
+                array_push($servicos, $servicosDTO);
+            }
+        }
+
+        $empresaDTO->servicos = $servicos;
+        
 
         return $empresaDTO;
     }

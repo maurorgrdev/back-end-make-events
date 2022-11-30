@@ -53,13 +53,6 @@ class UserService
         ], 404);
     }
 
-    public function teste(){
-
-        $user = $this->userModel::find(1)->first();
-
-        return $user->notify(new EmailNovoUsuarioNotify());
-    }
-
     /**
      * Método privado para gerar senha aleatorio
      *
